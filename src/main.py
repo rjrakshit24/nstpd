@@ -59,14 +59,6 @@ class Settings:
     def getStatusServerResponse(cls):
         return cls.StatusServerResponse
 
-    # @classmethod
-    # def storeData(cls, k: str, v: bytes, u: str):
-    #     a = cls.DataStore.get(u)
-    #     if a:
-    #         a[k] = v
-    #     else:
-    #         cls.DataStore[u] = {k: v}
-
     @classmethod
     def storeData(cls, k: str, v: bytes, u: str):
         logging.info("Storing Data Function")
@@ -74,16 +66,6 @@ class Settings:
         Path(cls.DataStore + u).mkdir(parents=True, exist_ok=True)
         with open(cls.DataStore + u + "/" + k, "w+b") as f:
             f.write(v)
-
-    # @classmethod
-    # def loadData(cls, k: str, u: str):
-    #     logging.info("Loading Data Function")
-    #     logging.info(f"User: {u}, Key: {k}")
-    #     a = cls.DataStore.get(u)
-    #     logging.debug(a)
-    #     if a:
-    #         return a.get(k, b"")
-    #     return b""
     
     @classmethod
     def loadData(cls, k: str, u: str):
@@ -93,27 +75,6 @@ class Settings:
             return b""
         with open(cls.DataStore + u + "/" + k, "rb") as f:
             return f.read()
-
-    # @classmethod
-    # def closeDataStore(cls):
-    #     logging.debug("Closing Data Store")
-    #     #Remove . when making final submission
-    #     with open("./internal/data.json", "wb") as f:
-    #         pickle.dump(cls.DataStore, f)
-    #     logging.debug("Closed Data Store")
-    
-    # @classmethod
-    # def openDataStore(cls):
-    #     logging.debug("Opening Data Store")
-    #     try:
-    #         #Remove . when making final submission
-    #         with open("./internal/data.json", "rb") as f:
-    #             cls.DataStore = pickle.load(f)
-    #     except:
-    #         cls.DataStore = dict()
-    #         logging.debug("No Data Store Found")
-    #     logging.debug("Opened Data Store")
-    #     logging.debug(pprint.pprint(cls.DataStore, indent=4))
 
 def hash_certificate(h, cert: Certificate) -> bytes:
     for x in cert.subjects:
@@ -610,10 +571,9 @@ async def nstpd(configFile):
     async with server:
         await server.serve_forever()
 
-# atexit.register(Settings.closeDataStore)
 def main():
     # init_pki()
-    asyncio.run(nstpd(sys.argv[1])) #sys.argv[1]
+    asyncio.run(nstpd(sys.argv[1]))
 
 
 if __name__ == "__main__":
